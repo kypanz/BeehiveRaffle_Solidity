@@ -159,15 +159,29 @@ describe("Testing Lottery/Raffle smrat contract for Behive Team", function () {
 
         // Setting the winner and sended the reward
         let myBalanceBefore = await ethers.provider.getBalance(addr1.address); // <-- for check the balance
-        //console.log('Before : ',myBalanceBefore);
+        //console.log('[Before] winner : ',myBalanceBefore);
 
+        // Getting information about the owner of the raffle
+        let myBalanceOwnerBefore = await ethers.provider.getBalance(owner.address);
+        //console.log('[Before] owner : ',myBalanceOwnerBefore);
+
+        // Getting information about the raffle to see who is the "Owner" of the raffle
+        let raffleId = await beeTeamContract.getRaffleByIdPartOne(2);
+        let raffleId2 = await beeTeamContract.getRaffleByIdPartTwo(2);
+        //console.log('Information about the raffle : ',raffleId,raffleId2);
+
+        // Finishing the raffle
         await beeTeamContract.finishRaffle(2);
 
         // Rewarding the winnner
         await beeTeamContract.connect(addr1).getMyInfo();
 
+        // Getting the informaction of the blances after the finish raffle
+        let myBalanceOwnerAfter = await ethers.provider.getBalance(owner.address);
         let myBalanceAfter = await ethers.provider.getBalance(addr1.address); // <-- for check the balance
-        //console.log('After : ',myBalanceAfter);
+        //console.log('[After] owner winner : ',myBalanceOwnerAfter);
+        //console.log('[After] winner : ',myBalanceAfter);
+      
 
         // Revert => has a winner
         await expect(

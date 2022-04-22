@@ -203,6 +203,11 @@ contract BeeTeamLottery {
         raffles[_idRaffle].statusRewarded = true;
         payable(address(raffles[_idRaffle].participants[winnerTicket])).transfer(raffles[_idRaffle].rewardAmount * 1 ether);
 
+        // Reward the owner of the raffle
+        uint256 ticketsSelled = raffles[_idRaffle].counterTickets;
+        uint256 priceTicket = raffles[_idRaffle].priceTicket;
+        payable(address(raffles[_idRaffle].ownerOfRaffle)).transfer((ticketsSelled * priceTicket) * 1 ether);
+
     }
 
     // Close the raffle
